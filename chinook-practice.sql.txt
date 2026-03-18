@@ -1,0 +1,28 @@
+-- counts the amount of tracks per genre and then returns the top genres with the most tracks
+SELECT GenreId, COUNT(*) AS count 
+FROM Track
+GROUP BY GenreId 
+ORDER BY count DESC 
+LIMIT 5 
+
+-- returns the total sum per country and is sorted by least to highest
+SELECT BillingCountry, SUM(Total) AS sum_per_country
+FROM Invoice 
+GROUP BY BillingCountry 
+ORDER BY BillingCountry
+
+--returns the avg track length per genre and is sorted by Genre
+SELECT GenreID, AVG(Milliseconds) AS avg_track_length
+FROM Track 
+GROUP BY GenreID
+ORDER BY GenreID
+
+--returns song names excluding genres 1, 2, and 3
+SELECT GenreId, Name 
+FROM Track 
+WHERE GenreId NOT IN (1,2,3)
+
+--returns employees hired between the specified dates
+SELECT FirstName, LastName, HireDate 
+FROM Employee 
+WHERE HireDate BETWEEN '2002-01-01' AND '2004-12-31'
