@@ -26,3 +26,32 @@ WHERE GenreId NOT IN (1,2,3)
 SELECT FirstName, LastName, HireDate 
 FROM Employee 
 WHERE HireDate BETWEEN '2002-01-01' AND '2004-12-31'
+
+
+--returns the genre track analysis with genre that have more than 20 songs
+SELECT GenreId,
+	   MAX(Milliseconds / 60000) AS longest_track,
+	   MIN(Milliseconds / 60000) AS shortest_track,
+	   AVG(Milliseconds / 60000) AS avg_track_length
+FROM Track 
+GROUP BY 1
+HAVING COUNT(*) > 20
+
+-- returns a revenue report per country
+SELECT BillingCountry, 
+	   Count(InvoiceId) AS num_invoice,
+	   SUM(Total) AS total_invoice, 
+	   AVG(Total) AS avg_invoice
+FROM Invoice
+GROUP BY 1
+HAVING SUM(Total) > 50
+ORDER BY total_invoice DESC 
+
+--returns a count for each length range
+SELECT CASE WHEN Milliseconds < 180000 THEN 'Short'
+			WHEN Milliseconds >= 180000 AND Milliseconds <= 300000 THEN 'Medium'
+			ELSE 'Long' END AS track_length,
+		COUNT(*) AS count
+FROM Track 
+GROUP BY 1
+
