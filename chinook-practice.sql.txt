@@ -55,3 +55,33 @@ SELECT CASE WHEN Milliseconds < 180000 THEN 'Short'
 FROM Track 
 GROUP BY 1
 
+
+--Union with aggregation
+SELECT c.Country, SUM(i.Total)
+FROM Customer c
+LEFT JOIN Invoice i ON c.CustomerId = i.CustomerId 
+GROUP BY 1
+UNION ALL
+SELECT 'Sum of Countries', SUM(i.Total)
+FROM Customer c
+LEFT JOIN Invoice i ON c.CustomerId = i.CustomerId 
+ORDER BY 2 DESC 
+
+--Union across joined tables
+SELECT 'Customer', 
+		c.FirstName, 
+		c.LastName, SUM(i.Total) AS total
+FROM Customer c
+LEFT JOIN Invoice i ON c.CustomerId = i.CustomerId 
+GROUP BY 1,2,3
+UNION 
+SELECT 'Employee',
+		e.FirstName, e.LastName, SUM(i.Total) 
+FROM Employee e
+LEFT JOIN Customer c ON e.EmployeeId = c.SupportRepId 
+LEFT JOIN Invoice i ON c.CustomerId = i.CustomerId 
+GROUP BY 1,2,3 
+
+
+
+
